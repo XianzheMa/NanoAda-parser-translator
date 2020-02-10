@@ -2,13 +2,16 @@ package nada;
 
 public class SymbolEntry extends Object{
 
-    //public static final int NONE = 0;
+    // NONE is used when only doing scope analysis
+    // When role analysis is activated, NONE shouldn't be used anywhere
+    public static final int NONE = 0;
     public static final int CONST = 1;
     public static final int PARAM = 2;
     public static final int PROC = 3;
     public static final int TYPE = 4;
     public static final int VAR = 5;
- 
+
+
     // name is just the identifier name
     private String name;
     // role should be one of the five listed above
@@ -21,25 +24,38 @@ public class SymbolEntry extends Object{
         this.role = role;
     }
  
-    public String toString(int mode){
-        if (mode == Parser.ROLE){
+    public String toString(boolean roleEnabled){
+        if (roleEnabled == true){
            return "Name: " + this.name + " " + "Role: " + roleToString();
         }
         else{
            return "Name: " + this.name;
         }
     }
- 
+
+    @Override
+    public String toString(){
+        this.toString(false);
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public int getRole(){
+        return this.role;
+    }
+
     private String roleToString(){
         String s = "";
         switch (role){
-            //case NONE:  s = "None";      break;
+            case NONE:  s = "None";      break;
             case CONST: s = "CONSTANT";  break;
             case PARAM: s = "PARAMETER"; break;
             case PROC:  s = "PROCEDURE"; break;
             case TYPE:  s = "TYPE";      break;
             case VAR:   s = "VARIABLE";  break;
-            //default:    s = "None";
+            default:    s = "None";
         }
         return s;
     }
