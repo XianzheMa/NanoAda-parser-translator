@@ -1,0 +1,230 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// nada.sablecc	: nanoAda lexer/Parser for sablecc
+//
+//
+//  Created by Daryl  Posnett on Sat Jan 25 2020
+//  Copyright (c) 2004,2020 Daryl Posnett. All rights reserved.
+//
+// 	ECS140A, Winter 2020
+//  nada grammar version 0.01
+//
+// Package declaration is used to name the destination root where all the generated files will be placed
+
+Package nada;
+
+//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Helpers
+
+	all			= [0..0xffff];								// all characters
+	letter		= [['a'..'z'] + ['A'..'Z']];				// just the letters
+	digit 		= ['0'..'9'];
+	nz_digit	= ['1'..'9'];
+
+	ht			= 0x0009;									// tab
+	lf			= 0x000a;									// linefeed, abbreviated LF
+	ff			= 0x000c;									// formfeed, or page break, abbreviated FF
+	cr			= 0x000d;									// carriage return, abbreviated CR
+	sp			= ' ';										// space
+    squote		= ''';                                      // single quote
+    dquote      = '"';                                      // double quote
+
+	lineterm	= lf | cr | cr lf;							// line terminators
+	input_char 	= [all - [cr + lf]];						// valid input characters
+	ident_char	= letter | '$' | '_';						// valid ident characters
+
+	integer_num	= '0' | nz_digit+ digit*;					// integer number
+
+	escape 		= '\t' | '\n' | '\"' | '\' ''' | '\\';		// escape sequences
+
+	identifier	= (ident_char) (ident_char | digit )*;		// standarad identifier
+    
+    // letters												// allow random case indifference
+    //
+    a 			= 'a' | 'A';
+    b 			= 'b' | 'B';
+    c 			= 'c' | 'C';
+    d 			= 'd' | 'D';
+    e 			= 'e' | 'E';
+    f 			= 'f' | 'F';
+    g 			= 'g' | 'G';
+    h 			= 'h' | 'H';
+    i 			= 'i' | 'I';
+    j 			= 'j' | 'J';
+    k 			= 'k' | 'K';
+    l 			= 'l' | 'L';
+    m 			= 'm' | 'M';
+    n 			= 'n' | 'N';
+    o 			= 'o' | 'O';
+    p 			= 'p' | 'P';
+    q 			= 'q' | 'Q';
+    r 			= 'r' | 'R';
+    s 			= 's' | 'S';
+    t 			= 't' | 'T';
+    u 			= 'u' | 'U';
+    v 			= 'v' | 'V';
+    w 			= 'w' | 'W';
+    x 			= 'x' | 'X';
+    y 			= 'y' | 'Y';
+    z 			= 'z' | 'Z';
+    
+
+//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Tokens
+
+	// misc
+	//
+	whitespace 	= (ht | lf | ff | cr |sp)+;
+
+	// language keywords
+	//
+    proc        = p r o c e d u r e;
+    null        = n u l l;
+    if          = i f;
+    then        = t h e n;
+    else        = e l s e;
+    elseif      = e l s e i f;
+    loop        = l o o p;
+    while       = w h i l e;
+    begin       = b e g i n;
+    end         = e n d;
+    endif       = e n d i f;
+    const       = c o n s t a n t;
+    out         = o u t;
+    is          = i s;  
+    write       = w r i t e;
+    writeln     = w r i t e l n;
+
+	// punctuation
+	//
+	l_paren		= '(';
+	r_paren 	= ')';
+	dot			= '.';
+	semi		= ';';
+    colon       = ':';
+	comma		= ',';
+
+	// operators
+	//
+	plus		= '+';
+	minus		= '-';
+	mult		= '*';
+    div         = '/';
+    mod         = m o d;
+	lt			= '<';
+    gt			= '>';
+	le			= '<=';
+    ge			= '>=';
+    eq			= '=';
+    neq			= '/=';
+    gets        = ':=';
+
+	// literals/identifiers
+	// lineterm means line terminator
+    // linecmnt means line comment
+	ident		=  identifier;
+    number_lit	= integer_num;
+    string_lit	= dquote ([input_char - squote] | escape)* dquote;
+    linecmnt 	= '--' input_char* lineterm;
+
+//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Ignored Tokens
+	whitespace, linecmnt;
+
+
+//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Productions
+
+    nada                    =                   subprogram_body;
+
+    subprogram_body         =                   subprogram_spec is decl_part begin stmt_seq end ident? semi;
+    // "*" means zero or more multiples of
+    decl_part               =                   basic_decl*;
+
+    basic_decl              = {obj_decl}        object_decl
+                            | {num_decl}        number_decl
+                            | {spb_decl}        subprogram_body
+                            ;
+
+    object_decl             =                   ident_list colon ident semi;
+    number_decl             =                   ident_list colon const gets simple_expr semi;
+    ident_list              =                   ident another_ident*;
+        another_ident           =                   comma ident;
+
+    enum_typedef            =                   l_paren ident_list r_paren;
+
+    subprogram_spec         =                   proc ident formal_part?;
+    formal_part             =                   l_paren param_spec another_param_spec* r_paren;
+    param_spec              =                   ident_list colon out? ident;
+        another_param_spec      =                   comma param_spec;
+
+    stmt_seq                =                   [statement]:statement [statements]:statement*;
+    statement               = {simple_stmt}     simple_stmt
+                            | {compound_stmt}   compound_stmt
+                            ;
+
+    simple_stmt             = {null_stmt}       null_stmt
+                            | {assign_stmt}     assign_stmt
+                            | {proc_call_stmt}  proc_call_stmt
+                            | {write}           write_stmt
+                            ;    
+
+    compound_stmt           = {if_compound}     if_stmt
+                            | {loop_compound}   loop_stmt
+                            ;
+
+    null_stmt               =                   null semi;
+    assign_stmt             =                   ident gets simple_expr semi;
+    write_stmt              = {write}           write l_paren write_expr? r_paren semi
+                            | {writeln}         writeln l_paren write_expr? r_paren semi
+                            ;
+
+    if_stmt                 =                   if relation then stmt_seq elseif_clause* else_clause? endif semi;
+    elseif_clause           =                   elseif relation then stmt_seq;
+    else_clause             =                   else stmt_seq;
+
+    loop_stmt               =                   while relation [loop_start]:loop stmt_seq end [loop_end]:loop semi;
+
+    proc_call_stmt          =                   ident actual_param_part? semi;
+    actual_param_part       =                   l_paren simple_expr another_param* r_paren;
+        another_param           =                   comma simple_expr;
+
+    relation                =                   simple_expr relation_clause?;
+    relation_clause         =                   rel_op simple_expr;
+
+    write_expr              = {string_lit}      string_lit
+                            | {simple_expr}     simple_expr
+                            ;
+
+    simple_expr             =                   [left]:term add_op [right]:term
+                            | {term}            term
+                            ;
+    
+    term                    =                   [left]:factor mul_op [right]:factor
+                            | {factor}          factor
+                            ;
+
+    factor                  = {factor}          primary
+                            | {neg_prim}        minus primary
+                            ;
+
+    primary                 = {num_lit}         number_lit
+                            | {name}            ident
+                            | {expr}            l_paren simple_expr r_paren
+                            ;
+    
+    rel_op                  = {eq}              eq 
+                            | {neq}             neq 
+                            | {lt}              lt 
+                            | {le}              le 
+                            | {gt}              gt 
+                            | {ge}              ge
+                            ;
+
+    add_op                  = {plus}            plus 
+                            | {minus}           minus
+                            ;
+
+    mul_op                  = {mult}            mult 
+                            | {div}             div 
+                            | {mod}             mod
+                            ;
