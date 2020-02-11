@@ -10,7 +10,10 @@ public class SymbolEntry extends Object{
     public static final int PROC = 3;
     public static final int TYPE = 4;
     public static final int VAR = 5;
-
+    // left hand side: PARAM or VAR
+    public static final int LHS = 6;
+    // right hand side: CONST, PARAM or VAR
+    public static final int RHS = 7;
 
     // name is just the identifier name
     private final String name;
@@ -55,6 +58,8 @@ public class SymbolEntry extends Object{
             case PROC:  s = "PROCEDURE"; break;
             case TYPE:  s = "TYPE";      break;
             case VAR:   s = "VARIABLE";  break;
+            case LHS:   s = "PARAM or VAR"; break;
+            case RHS:   s = "CONST, PARAM, or VAR"; break;
             default:    s = "None";
         }
         return s;

@@ -7,9 +7,11 @@ import java.util.*; // LinkedList
 // TODO: ask why the case function checks if every part exists, even if it must exist.
 
 public class SemanticAnalysis extends DepthFirstAdapter{
+
     private SymbolTable table;
     private boolean roleEnabled;
     private boolean printInfo;
+
     public SemanticAnalysis(boolean roleEnabled, boolean printInfo){
         this.roleEnabled = roleEnabled;
         this.printInfo = printInfo;
@@ -47,9 +49,9 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         if(this.roleEnabled){
             if(role != entry.getRole()){
                 // role inconsistency error
-                System.out.println("Type error: [" + identifier.getLine() + "," +
-                    identifier.getPos() + "] " + name + "should be of type " + 
-                    SymbolEntry.roleToString(role) + ".");
+                System.out.println("Role error: [" + identifier.getLine() + "," +
+                    identifier.getPos() + "] " + name + "should be of role " + 
+                    SymbolEntry.roleToString(role) + ", not " + SymbolEntry.roleToString(entry.getRole()) + ".");
                 System.exit(1);
             }
         }
@@ -129,7 +131,6 @@ public class SemanticAnalysis extends DepthFirstAdapter{
     // object_decl = ident_list colon ident semi;
     @Override
     public void outAObjectDecl(AObjectDecl node) {
-        // TODO: ask the correct checking order
         TIdent identifier = node.getIdent();
         this.findIdentifier(identifier, SymbolEntry.TYPE);
         AIdentList identList = (AIdentList) node.getIdentList();
@@ -143,16 +144,39 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         this.enterIdentifiers(this.getIdentifiers(identList), SymbolEntry.CONST);
     }
 
+    // TODO: ignore enum_typedef: no use
     // enum_typedef = l_paren ident_list r_paren;
+
+
+    // param_spec = ident_list colon out? ident;
     @Override
-    public void outAEnumTypedef(AEnumTypedef node) {
-        // TODO: what is enumTypedef?
+    public void outAParamSpec(AParamSpec node) {
+        TIdent identifier = node.getIdent();
+        this.findIdentifier(identifier, SymbolEntry.TYPE);
         AIdentList identList = (AIdentList) node.getIdentList();
-        this.checkIdentifiers(this.getIdentifiers(identList), SymbolEntry.CONST);
+        this.enterIdentifiers(this.getIdentifiers(identList), SymbolEntry.PARAM);
     }
 
-    
     public void outStart(Start node) {
         this.table.exitScope(printInfo);
+    }
+
+    // assign_stmt = ident gets simple_expr semi;
+    @Override
+    public void outAAssignStmt(AAssignStmt node) {
+        TIdent identifier = node.getIdent();
+        this.findIdentifier(identifier, SymbolEntry.LHS);
+    }
+
+    @Override
+    public void outAProcCallStmt(AProcCallStmt node) {
+        TIdent identifier = node.getIdent();
+        this.findIdentifier(identifier, SymbolEntry.PROC);
+    }
+
+    @Override
+    public void inANamePrimary(ANamePrimary node) {
+        TIdent identifier = node.getIdent();
+        this.findIdentifier(identifier, SymbolEntry.RHS);
     }
 }
