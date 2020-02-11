@@ -6,10 +6,8 @@
 //  Copyright (c) 2004,2020 Daryl Posnett. All rights reserved.
 //
 // 	ECS140A, Winter 2020
-//  nada grammar version 0.01
+//  nada grammar version 0.02
 //
-// Package declaration is used to name the destination root where all the generated files will be placed
-
 Package nada;
 
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -21,9 +19,9 @@ Helpers
 	nz_digit	= ['1'..'9'];
 
 	ht			= 0x0009;									// tab
-	lf			= 0x000a;									// linefeed, abbreviated LF
-	ff			= 0x000c;									// formfeed, or page break, abbreviated FF
-	cr			= 0x000d;									// carriage return, abbreviated CR
+	lf			= 0x000a;									// linefeed
+	ff			= 0x000c;									// formfeed
+	cr			= 0x000d;									// carriage return
 	sp			= ' ';										// space
     squote		= ''';                                      // single quote
     dquote      = '"';                                      // double quote
@@ -119,8 +117,7 @@ Tokens
     gets        = ':=';
 
 	// literals/identifiers
-	// lineterm means line terminator
-    // linecmnt means line comment
+	//
 	ident		=  identifier;
     number_lit	= integer_num;
     string_lit	= dquote ([input_char - squote] | escape)* dquote;
@@ -135,9 +132,7 @@ Ignored Tokens
 Productions
 
     nada                    =                   subprogram_body;
-
     subprogram_body         =                   subprogram_spec is decl_part begin stmt_seq end ident? semi;
-    // "*" means zero or more multiples of
     decl_part               =                   basic_decl*;
 
     basic_decl              = {obj_decl}        object_decl
@@ -151,7 +146,7 @@ Productions
         another_ident           =                   comma ident;
 
     enum_typedef            =                   l_paren ident_list r_paren;
-    // TODO: next time should start from here
+
     subprogram_spec         =                   proc ident formal_part?;
     formal_part             =                   l_paren param_spec another_param_spec* r_paren;
     param_spec              =                   ident_list colon out? ident;
@@ -195,11 +190,11 @@ Productions
                             | {simple_expr}     simple_expr
                             ;
 
-    simple_expr             =                   [left]:term add_op [right]:term
+    simple_expr             =                   [left]:simple_expr add_op [right]:term
                             | {term}            term
                             ;
     
-    term                    =                   [left]:factor mul_op [right]:factor
+    term                    =                   [left]:term mul_op [right]:factor
                             | {factor}          factor
                             ;
 

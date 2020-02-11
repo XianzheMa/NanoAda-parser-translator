@@ -7,7 +7,7 @@ import nada.analysis.*;
 @SuppressWarnings("nls")
 public final class ATerm extends PTerm
 {
-    private PFactor _left_;
+    private PTerm _left_;
     private PMulOp _mulOp_;
     private PFactor _right_;
 
@@ -17,7 +17,7 @@ public final class ATerm extends PTerm
     }
 
     public ATerm(
-        @SuppressWarnings("hiding") PFactor _left_,
+        @SuppressWarnings("hiding") PTerm _left_,
         @SuppressWarnings("hiding") PMulOp _mulOp_,
         @SuppressWarnings("hiding") PFactor _right_)
     {
@@ -45,12 +45,12 @@ public final class ATerm extends PTerm
         ((Analysis) sw).caseATerm(this);
     }
 
-    public PFactor getLeft()
+    public PTerm getLeft()
     {
         return this._left_;
     }
 
-    public void setLeft(PFactor node)
+    public void setLeft(PTerm node)
     {
         if(this._left_ != null)
         {
@@ -160,7 +160,7 @@ public final class ATerm extends PTerm
         // Replace child
         if(this._left_ == oldChild)
         {
-            setLeft((PFactor) newChild);
+            setLeft((PTerm) newChild);
             return;
         }
 

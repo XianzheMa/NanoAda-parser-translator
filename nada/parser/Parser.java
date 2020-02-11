@@ -2209,14 +2209,14 @@ public class Parser
         PSimpleExpr psimpleexprNode1;
         {
             // Block
-        PTerm ptermNode2;
+        PSimpleExpr psimpleexprNode2;
         PAddOp paddopNode3;
         PTerm ptermNode4;
-        ptermNode2 = (PTerm)nodeArrayList1.get(0);
+        psimpleexprNode2 = (PSimpleExpr)nodeArrayList1.get(0);
         paddopNode3 = (PAddOp)nodeArrayList2.get(0);
         ptermNode4 = (PTerm)nodeArrayList3.get(0);
 
-        psimpleexprNode1 = new ASimpleExpr(ptermNode2, paddopNode3, ptermNode4);
+        psimpleexprNode1 = new ASimpleExpr(psimpleexprNode2, paddopNode3, ptermNode4);
         }
 	nodeList.add(psimpleexprNode1);
         return nodeList;
@@ -2255,14 +2255,14 @@ public class Parser
         PTerm ptermNode1;
         {
             // Block
-        PFactor pfactorNode2;
+        PTerm ptermNode2;
         PMulOp pmulopNode3;
         PFactor pfactorNode4;
-        pfactorNode2 = (PFactor)nodeArrayList1.get(0);
+        ptermNode2 = (PTerm)nodeArrayList1.get(0);
         pmulopNode3 = (PMulOp)nodeArrayList2.get(0);
         pfactorNode4 = (PFactor)nodeArrayList3.get(0);
 
-        ptermNode1 = new ATerm(pfactorNode2, pmulopNode3, pfactorNode4);
+        ptermNode1 = new ATerm(ptermNode2, pmulopNode3, pfactorNode4);
         }
 	nodeList.add(ptermNode1);
         return nodeList;
@@ -2988,9 +2988,9 @@ public class Parser
 			{{-1, REDUCE, 61}, },
 			{{-1, REDUCE, 60}, },
 			{{-1, ERROR, 60}, {3, SHIFT, 80}, },
-			{{-1, REDUCE, 49}, {27, SHIFT, 81}, {28, SHIFT, 82}, {29, SHIFT, 83}, {30, SHIFT, 84}, {31, SHIFT, 85}, {32, SHIFT, 86}, },
-			{{-1, REDUCE, 55}, {22, SHIFT, 89}, {23, SHIFT, 90}, },
-			{{-1, REDUCE, 57}, {24, SHIFT, 92}, {25, SHIFT, 93}, {26, SHIFT, 94}, },
+			{{-1, REDUCE, 49}, {22, SHIFT, 81}, {23, SHIFT, 82}, {27, SHIFT, 83}, {28, SHIFT, 84}, {29, SHIFT, 85}, {30, SHIFT, 86}, {31, SHIFT, 87}, {32, SHIFT, 88}, },
+			{{-1, REDUCE, 55}, {24, SHIFT, 92}, {25, SHIFT, 93}, {26, SHIFT, 94}, },
+			{{-1, REDUCE, 57}, },
 			{{-1, REDUCE, 58}, },
 			{{-1, ERROR, 65}, {6, SHIFT, 96}, },
 			{{-1, ERROR, 66}, {16, SHIFT, 56}, {17, SHIFT, 97}, {23, SHIFT, 57}, {34, SHIFT, 58}, {35, SHIFT, 59}, {36, SHIFT, 98}, },
@@ -3005,9 +3005,11 @@ public class Parser
 			{{-1, ERROR, 75}, {16, SHIFT, 56}, {23, SHIFT, 57}, {34, SHIFT, 58}, {35, SHIFT, 59}, },
 			{{-1, REDUCE, 8}, },
 			{{-1, REDUCE, 19}, },
-			{{-1, ERROR, 78}, {17, SHIFT, 110}, },
+			{{-1, ERROR, 78}, {17, SHIFT, 110}, {22, SHIFT, 81}, {23, SHIFT, 82}, },
 			{{-1, REDUCE, 59}, },
 			{{-1, ERROR, 80}, {1, SHIFT, 32}, {2, SHIFT, 33}, {7, SHIFT, 34}, {14, SHIFT, 35}, {15, SHIFT, 36}, {34, SHIFT, 37}, },
+			{{-1, REDUCE, 69}, },
+			{{-1, REDUCE, 70}, },
 			{{-1, REDUCE, 65}, },
 			{{-1, REDUCE, 67}, },
 			{{-1, REDUCE, 66}, },
@@ -3015,9 +3017,7 @@ public class Parser
 			{{-1, REDUCE, 63}, },
 			{{-1, REDUCE, 64}, },
 			{{-1, REDUCE, 50}, },
-			{{-1, ERROR, 88}, {16, SHIFT, 56}, {23, SHIFT, 57}, {34, SHIFT, 58}, {35, SHIFT, 59}, },
-			{{-1, REDUCE, 69}, },
-			{{-1, REDUCE, 70}, },
+			{{-1, ERROR, 90}, {16, SHIFT, 56}, {23, SHIFT, 57}, {34, SHIFT, 58}, {35, SHIFT, 59}, },
 			{{-1, ERROR, 91}, {16, SHIFT, 56}, {23, SHIFT, 57}, {34, SHIFT, 58}, {35, SHIFT, 59}, },
 			{{-1, REDUCE, 71}, },
 			{{-1, REDUCE, 72}, },
@@ -3027,20 +3027,20 @@ public class Parser
 			{{-1, ERROR, 97}, {19, SHIFT, 116}, },
 			{{-1, REDUCE, 52}, },
 			{{-1, ERROR, 99}, {17, SHIFT, 117}, },
-			{{-1, REDUCE, 53}, },
+			{{-1, REDUCE, 53}, {22, SHIFT, 81}, {23, SHIFT, 82}, },
 			{{-1, ERROR, 101}, {19, SHIFT, 118}, },
 			{{-1, ERROR, 102}, {17, SHIFT, 119}, },
-			{{-1, ERROR, 103}, {17, SHIFT, 120}, {21, SHIFT, 121}, },
-			{{-1, ERROR, 104}, {19, SHIFT, 124}, },
+			{{-1, ERROR, 103}, {17, SHIFT, 120}, {21, SHIFT, 121}, {22, SHIFT, 81}, {23, SHIFT, 82}, },
+			{{-1, ERROR, 104}, {19, SHIFT, 124}, {22, SHIFT, 81}, {23, SHIFT, 82}, },
 			{{-1, REDUCE, 45}, },
 			{{-1, REDUCE, 1}, },
 			{{-1, ERROR, 107}, {19, SHIFT, 125}, },
 			{{-1, REDUCE, 81}, },
-			{{-1, ERROR, 109}, {19, SHIFT, 126}, },
+			{{-1, ERROR, 109}, {19, SHIFT, 126}, {22, SHIFT, 81}, {23, SHIFT, 82}, },
 			{{-1, REDUCE, 62}, },
 			{{-1, ERROR, 111}, {4, SHIFT, 127}, {5, SHIFT, 128}, {10, SHIFT, 129}, },
-			{{-1, REDUCE, 51}, },
-			{{-1, REDUCE, 54}, },
+			{{-1, REDUCE, 51}, {22, SHIFT, 81}, {23, SHIFT, 82}, },
+			{{-1, REDUCE, 54}, {24, SHIFT, 92}, {25, SHIFT, 93}, {26, SHIFT, 94}, },
 			{{-1, REDUCE, 56}, },
 			{{-1, ERROR, 115}, {9, SHIFT, 133}, },
 			{{-1, REDUCE, 33}, },
@@ -3063,7 +3063,7 @@ public class Parser
 			{{-1, ERROR, 133}, {6, SHIFT, 146}, },
 			{{-1, REDUCE, 34}, },
 			{{-1, REDUCE, 36}, },
-			{{-1, REDUCE, 48}, },
+			{{-1, REDUCE, 48}, {22, SHIFT, 81}, {23, SHIFT, 82}, },
 			{{-1, REDUCE, 47}, },
 			{{-1, REDUCE, 85}, },
 			{{-1, REDUCE, 42}, },
@@ -3112,13 +3112,13 @@ public class Parser
 			{{-1, 71}, },
 			{{-1, 122}, {123, 138}, },
 			{{-1, 60}, {34, 65}, {128, 140}, },
-			{{-1, 87}, },
+			{{-1, 89}, },
 			{{-1, 99}, {67, 102}, },
-			{{-1, 61}, {56, 78}, {66, 100}, {67, 100}, {68, 103}, {70, 104}, {75, 109}, {88, 112}, {121, 136}, },
+			{{-1, 61}, {56, 78}, {66, 100}, {67, 100}, {68, 103}, {70, 104}, {75, 109}, {90, 112}, {121, 136}, },
 			{{-1, 62}, {91, 113}, },
 			{{-1, 63}, {95, 114}, },
 			{{-1, 64}, {57, 79}, },
-			{{-1, 88}, },
+			{{-1, 90}, },
 			{{-1, 91}, },
 			{{-1, 95}, },
 			{{-1, 16}, },
@@ -3153,21 +3153,23 @@ public class Parser
 			"expecting: '(', ident, number lit",
 			"expecting: then, loop, ')', ';', ',', '+', '-', '*', '/', mod, '<', '>', '<=', '>=', '=', '/='",
 			"expecting: then",
-			"expecting: then, loop, '<', '>', '<=', '>=', '=', '/='",
-			"expecting: then, loop, ')', ';', ',', '+', '-', '<', '>', '<=', '>=', '=', '/='",
+			"expecting: then, loop, '+', '-', '<', '>', '<=', '>=', '=', '/='",
 			"expecting: loop",
 			"expecting: '(', ')', '-', ident, number lit, string lit",
 			"expecting: ';', ident",
-			"expecting: ')'",
+			"expecting: ')', '+', '-'",
 			"expecting: then, loop",
+			"expecting: ')'",
+			"expecting: ')', ',', '+', '-'",
+			"expecting: ';', '+', '-'",
 			"expecting: proc, begin, ident, EOF",
 			"expecting: else, elseif, endif",
-			"expecting: then, loop, ')', ';', ',', '<', '>', '<=', '>=', '=', '/='",
+			"expecting: then, loop, '+', '-'",
 			"expecting: endif",
         };*/
     private static int[] errors;
 /*      {
-			0, 1, 2, 2, 3, 4, 5, 1, 3, 6, 5, 7, 5, 5, 5, 8, 5, 8, 9, 1, 6, 6, 10, 11, 5, 12, 3, 1, 9, 9, 6, 6, 13, 14, 14, 15, 15, 16, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 13, 1, 9, 9, 3, 9, 18, 14, 20, 21, 21, 22, 23, 24, 21, 21, 25, 26, 26, 14, 18, 14, 13, 27, 18, 18, 14, 5, 9, 28, 21, 10, 14, 14, 14, 14, 14, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 10, 13, 28, 28, 28, 13, 28, 9, 13, 18, 30, 13, 18, 13, 21, 31, 29, 32, 24, 17, 18, 13, 18, 13, 13, 14, 9, 9, 18, 30, 5, 10, 14, 13, 31, 33, 31, 25, 18, 18, 9, 13, 9, 33, 22, 18, 13, 13, 31, 33, 13, 10, 18, 18, 13, 18, 31, 18, 
+			0, 1, 2, 2, 3, 4, 5, 1, 3, 6, 5, 7, 5, 5, 5, 8, 5, 8, 9, 1, 6, 6, 10, 11, 5, 12, 3, 1, 9, 9, 6, 6, 13, 14, 14, 15, 15, 16, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 13, 1, 9, 9, 3, 9, 18, 14, 20, 21, 21, 22, 23, 21, 21, 21, 24, 25, 25, 14, 18, 14, 13, 26, 18, 18, 14, 5, 9, 27, 21, 10, 14, 14, 14, 14, 14, 14, 14, 14, 28, 14, 14, 14, 14, 14, 14, 10, 13, 29, 29, 27, 13, 29, 30, 31, 18, 32, 13, 18, 31, 21, 33, 34, 21, 21, 17, 18, 13, 18, 13, 13, 14, 9, 9, 18, 32, 5, 10, 14, 13, 33, 35, 33, 24, 18, 18, 30, 13, 9, 35, 22, 18, 13, 13, 33, 35, 13, 10, 18, 18, 13, 18, 33, 18, 
         };*/
 
     static 

@@ -7,7 +7,7 @@ import nada.analysis.*;
 @SuppressWarnings("nls")
 public final class ASimpleExpr extends PSimpleExpr
 {
-    private PTerm _left_;
+    private PSimpleExpr _left_;
     private PAddOp _addOp_;
     private PTerm _right_;
 
@@ -17,7 +17,7 @@ public final class ASimpleExpr extends PSimpleExpr
     }
 
     public ASimpleExpr(
-        @SuppressWarnings("hiding") PTerm _left_,
+        @SuppressWarnings("hiding") PSimpleExpr _left_,
         @SuppressWarnings("hiding") PAddOp _addOp_,
         @SuppressWarnings("hiding") PTerm _right_)
     {
@@ -45,12 +45,12 @@ public final class ASimpleExpr extends PSimpleExpr
         ((Analysis) sw).caseASimpleExpr(this);
     }
 
-    public PTerm getLeft()
+    public PSimpleExpr getLeft()
     {
         return this._left_;
     }
 
-    public void setLeft(PTerm node)
+    public void setLeft(PSimpleExpr node)
     {
         if(this._left_ != null)
         {
@@ -160,7 +160,7 @@ public final class ASimpleExpr extends PSimpleExpr
         // Replace child
         if(this._left_ == oldChild)
         {
-            setLeft((PTerm) newChild);
+            setLeft((PSimpleExpr) newChild);
             return;
         }
 
