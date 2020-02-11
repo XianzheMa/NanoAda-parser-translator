@@ -34,12 +34,12 @@ public class SemanticAnalysis extends DepthFirstAdapter{
     // given an identifier node, check if it exists in the symbole table
     // If roleEnabled is set, the role would also be matched with the role recorded in the table
     // If an error happenes, it would print out info and exit the program
-    public void checkIdentifier(TIdent identifier, int role){
+    public void findIdentifier(TIdent identifier, int role){
         String name = identifier.getText();
         SymbolEntry entry = this.table.findSymbol(name);
         if(entry == null){
             // not found
-            System.out.println("Undeclared error: [" + identifier.getLine() + "," +
+            System.out.println("Undeclaration error: [" + identifier.getLine() + "," +
                 identifier.getPos() + "] Unknown identifier " + name + ".");
             System.exit(1);
         }
@@ -55,15 +55,31 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         }
     }
 
-    // same utility as the former "checkIdentifiers"
-    // All the identifiers are expected to have the same role
-    public void checkIdentifiers(LinkedList<TIdent> list, int role){
-        Iterator<TIdent> iterator = list.iterator();
-        while(iterator.hasNext()){
-            TIdent identifier = iterator.next();
-            this.checkIdentifier(identifier, role);
+    // enter this identifier in the symbol table
+    // if the identifier already exists
+    // the program aborts and print an error
+    public void enterIdentifier(TIdent identifier, int role){
+        String name = identifier.getText();
+        if(this.roleEnabled == false){
+            role = SymbolEntry.NONE;
+        }
+        boolean result = this.table.enterSymbol(new SymbolEntry(name, role));
+        if(result == false){
+            System.out.println("Redeclaration error: [" + identifier.getLine() + "," +
+                identifier.getPos() + "] " + name + "is already declared");
+                System.exit(1);
         }
     }
+
+    // similar usage as the previous one
+    // enter a group of identifiers of the same role in the symbol table
+    public void enterIdentifiers(LinkedList<TIdent> list, int role){
+        Iterator<TIdent> iterator = list.iterator();
+        while(iterator.hasNext()){
+            this.enterIdentifier(iterator.next(), role);
+        }
+    }
+
 
     // identifier list only appears in declaration part
     // ident_list = ident another_ident*
@@ -90,19 +106,23 @@ public class SemanticAnalysis extends DepthFirstAdapter{
     public void inASubprogramBody(ASubprogramBody node) {
         this.table.enterScope();
     }
+
+
     // subprogram_spec = proc ident formal_part?;
     @Override
     public void inASubprogramSpec(ASubprogramSpec node) {
         TIdent identifier = node.getIdent();
-
+        this.enterIdentifier(identifier, SymbolEntry.PROC);
     }
+
+
     // subprogram_body = subprogram_spec is decl_part begin stmt_seq end ident? semi;
     @Override
     public void outASubprogramBody(ASubprogramBody node){
-        this.table.exitScope(printInfo);
+        this.table.exitScope(this.printInfo);
         TIdent identifier = node.getIdent();
         if(identifier != null){
-            this.checkIdentifier(identifier, SymbolEntry.PROC);
+            this.findIdentifier(identifier, SymbolEntry.PROC);
         }
     }
 
@@ -111,21 +131,22 @@ public class SemanticAnalysis extends DepthFirstAdapter{
     public void outAObjectDecl(AObjectDecl node) {
         // TODO: ask the correct checking order
         TIdent identifier = node.getIdent();
-        this.checkIdentifier(identifier, SymbolEntry.TYPE);
+        this.findIdentifier(identifier, SymbolEntry.TYPE);
         AIdentList identList = (AIdentList) node.getIdentList();
-        this.checkIdentifiers(this.getIdentifiers(identList), SymbolEntry.VAR);
+        this.enterIdentifiers(this.getIdentifiers(identList), SymbolEntry.VAR);
     }
 
     // number_decl = ident_list colon const gets simple_expr semi;
     @Override
     public void outANumberDecl(ANumberDecl node) {
         AIdentList identList = (AIdentList) node.getIdentList();
-        this.checkIdentifiers(this.getIdentifiers(identList), SymbolEntry.CONST);
+        this.enterIdentifiers(this.getIdentifiers(identList), SymbolEntry.CONST);
     }
 
     // enum_typedef = l_paren ident_list r_paren;
     @Override
     public void outAEnumTypedef(AEnumTypedef node) {
+        // TODO: what is enumTypedef?
         AIdentList identList = (AIdentList) node.getIdentList();
         this.checkIdentifiers(this.getIdentifiers(identList), SymbolEntry.CONST);
     }
