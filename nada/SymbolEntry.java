@@ -13,20 +13,20 @@ public class SymbolEntry extends Object{
 
 
     // name is just the identifier name
-    private String name;
+    private final String name;
     // role should be one of the five listed above
-    private int role;
+    private final int role;
 
     // warning: give an undefined role will trigger undefined behavior
     // id should be case sensitive
-    public SymbolEntry(String id, int role){
+    public SymbolEntry(final String id, final int role) {
         this.name = id;
         this.role = role;
     }
- 
-    public String toString(boolean roleEnabled){
+
+    public String toString(final boolean roleEnabled) {
         if (roleEnabled == true){
-           return "Name: " + this.name + " " + "Role: " + roleToString();
+           return "Name: " + this.name + " " + "Role: " + roleToString(this.role);
         }
         else{
            return "Name: " + this.name;
@@ -35,7 +35,7 @@ public class SymbolEntry extends Object{
 
     @Override
     public String toString(){
-        this.toString(false);
+        return this.toString(false);
     }
 
     public String getName(){
@@ -46,7 +46,7 @@ public class SymbolEntry extends Object{
         return this.role;
     }
 
-    private String roleToString(){
+    static public String roleToString(int role){
         String s = "";
         switch (role){
             case NONE:  s = "None";      break;
@@ -59,4 +59,5 @@ public class SymbolEntry extends Object{
         }
         return s;
     }
+
 }

@@ -14,20 +14,6 @@ public class SymbolTable {
         this.roleEnabled = roleEnabled;
         this.stack = new Stack<Map<String, SymbolEntry>>();
         HashMap<String, SymbolEntry> map = new HashMap<String, SymbolEntry>();
-        if(roleEnabled == true){
-            map.put("BOOLEAN", new SymbolEntry("BOOLEAN", SymbolEntry.TYPE));
-            map.put("CHAR", new SymbolEntry("CHAR", SymbolEntry.TYPE));
-            map.put("INTEGER", new SymbolEntry("INTEGER", SymbolEntry.TYPE));
-            map.put("TRUE", new SymbolEntry("TRUE", SymbolEntry.CONST));
-            map.put("FALSE", new SymbolEntry("FALSE", SymbolEntry.CONST));
-        }
-        else{
-            map.put("BOOLEAN", new SymbolEntry("BOOLEAN", SymbolEntry.NONE));
-            map.put("CHAR", new SymbolEntry("CHAR", SymbolEntry.NONE));
-            map.put("INTEGER", new SymbolEntry("INTEGER", SymbolEntry.NONE));
-            map.put("TRUE", new SymbolEntry("TRUE", SymbolEntry.NONE));
-            map.put("FALSE", new SymbolEntry("FALSE", SymbolEntry.NONE));
-        }
         this.stack.push(map);
     }
 
