@@ -34,7 +34,7 @@ Helpers
 
 	escape 		= '\t' | '\n' | '\"' | '\' ''' | '\\';		// escape sequences
 
-	identifier	= (ident_char) (ident_char | digit )*;		// standarad identifier
+	identifier	= (ident_char) (ident_char | digit )*;		// standard identifier
     
     // letters												// allow random case indifference
     //

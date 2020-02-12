@@ -4,7 +4,6 @@ import nada.analysis.*; // DepthFirstAdapter
 import nada.*; // SymbolTable, SymbolEntry
 import java.util.*; // LinkedList
 
-// TODO: ask why the case function checks if every part exists, even if it must exist.
 
 public class SemanticAnalysis extends DepthFirstAdapter{
 
@@ -47,10 +46,10 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         }
 
         if(this.roleEnabled){
-            if(role != entry.getRole()){
+            if(! entry.roleBelongsTo(role)){
                 // role inconsistency error
                 System.out.println("Role error: [" + identifier.getLine() + "," +
-                    identifier.getPos() + "] " + name + "should be of role " + 
+                    identifier.getPos() + "] " + name + " should be of role " + 
                     SymbolEntry.roleToString(role) + ", not " + SymbolEntry.roleToString(entry.getRole()) + ".");
                 System.exit(1);
             }
@@ -86,7 +85,6 @@ public class SemanticAnalysis extends DepthFirstAdapter{
     // identifier list only appears in declaration part
     // ident_list = ident another_ident*
     public LinkedList<TIdent> getIdentifiers(final AIdentList identList){
-        // TODO: not so sure of the implementation. Test later
         LinkedList<TIdent> list = new LinkedList<TIdent>();
         // add the first identifier
         list.add(identList.getIdent());
@@ -102,12 +100,7 @@ public class SemanticAnalysis extends DepthFirstAdapter{
 
     // For scope analysis, we only need to enter a new scope at subprogram body.
     // We only need to exit a scope at the end of the whole process as well as subprogramBody.
-
-    // subprogram_body = subprogram_spec is decl_part begin stmt_seq end ident? semi;
-    @Override
-    public void inASubprogramBody(ASubprogramBody node) {
-        this.table.enterScope();
-    }
+    
 
 
     // subprogram_spec = proc ident formal_part?;
@@ -115,6 +108,7 @@ public class SemanticAnalysis extends DepthFirstAdapter{
     public void inASubprogramSpec(ASubprogramSpec node) {
         TIdent identifier = node.getIdent();
         this.enterIdentifier(identifier, SymbolEntry.PROC);
+        this.table.enterScope();
     }
 
 

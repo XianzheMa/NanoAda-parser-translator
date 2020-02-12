@@ -52,17 +52,33 @@ public class SymbolEntry extends Object{
     static public String roleToString(int role){
         String s = "";
         switch (role){
-            case NONE:  s = "None";      break;
+            case NONE:  s = "NONE";      break;
             case CONST: s = "CONSTANT";  break;
             case PARAM: s = "PARAMETER"; break;
             case PROC:  s = "PROCEDURE"; break;
             case TYPE:  s = "TYPE";      break;
             case VAR:   s = "VARIABLE";  break;
-            case LHS:   s = "PARAM or VAR"; break;
-            case RHS:   s = "CONST, PARAM, or VAR"; break;
-            default:    s = "None";
+            case LHS:   s = "PARAMETER or VARIABLE"; break;
+            case RHS:   s = "CONSTANT, PARAMETER, or VARIABLE"; break;
+            default:    s = "NONE";
         }
         return s;
     }
 
+    /**
+     * Checks if the given role is "equal" to its role
+     *
+     * @param   role   the given role it tries to align with
+     */
+    public boolean roleBelongsTo(int role){
+        if(role == RHS){
+            return this.role == CONST || this.role == PARAM || this.role == VAR;
+        }
+        else if(role == LHS){
+            return this.role == PARAM || this.role == VAR;
+        }
+        else{
+            return this.role == role;
+        }
+    }
 }
