@@ -7,7 +7,7 @@ import nada.analysis.*;
 @SuppressWarnings("nls")
 public final class AAnotherParamSpec extends PAnotherParamSpec
 {
-    private TComma _comma_;
+    private TSemi _semi_;
     private PParamSpec _paramSpec_;
 
     public AAnotherParamSpec()
@@ -16,11 +16,11 @@ public final class AAnotherParamSpec extends PAnotherParamSpec
     }
 
     public AAnotherParamSpec(
-        @SuppressWarnings("hiding") TComma _comma_,
+        @SuppressWarnings("hiding") TSemi _semi_,
         @SuppressWarnings("hiding") PParamSpec _paramSpec_)
     {
         // Constructor
-        setComma(_comma_);
+        setSemi(_semi_);
 
         setParamSpec(_paramSpec_);
 
@@ -30,7 +30,7 @@ public final class AAnotherParamSpec extends PAnotherParamSpec
     public Object clone()
     {
         return new AAnotherParamSpec(
-            cloneNode(this._comma_),
+            cloneNode(this._semi_),
             cloneNode(this._paramSpec_));
     }
 
@@ -40,16 +40,16 @@ public final class AAnotherParamSpec extends PAnotherParamSpec
         ((Analysis) sw).caseAAnotherParamSpec(this);
     }
 
-    public TComma getComma()
+    public TSemi getSemi()
     {
-        return this._comma_;
+        return this._semi_;
     }
 
-    public void setComma(TComma node)
+    public void setSemi(TSemi node)
     {
-        if(this._comma_ != null)
+        if(this._semi_ != null)
         {
-            this._comma_.parent(null);
+            this._semi_.parent(null);
         }
 
         if(node != null)
@@ -62,7 +62,7 @@ public final class AAnotherParamSpec extends PAnotherParamSpec
             node.parent(this);
         }
 
-        this._comma_ = node;
+        this._semi_ = node;
     }
 
     public PParamSpec getParamSpec()
@@ -94,7 +94,7 @@ public final class AAnotherParamSpec extends PAnotherParamSpec
     public String toString()
     {
         return ""
-            + toString(this._comma_)
+            + toString(this._semi_)
             + toString(this._paramSpec_);
     }
 
@@ -102,9 +102,9 @@ public final class AAnotherParamSpec extends PAnotherParamSpec
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._comma_ == child)
+        if(this._semi_ == child)
         {
-            this._comma_ = null;
+            this._semi_ = null;
             return;
         }
 
@@ -121,9 +121,9 @@ public final class AAnotherParamSpec extends PAnotherParamSpec
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._comma_ == oldChild)
+        if(this._semi_ == oldChild)
         {
-            setComma((TComma) newChild);
+            setSemi((TSemi) newChild);
             return;
         }
 

@@ -320,35 +320,6 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAAnotherIdent(node);
     }
 
-    public void inAEnumTypedef(AEnumTypedef node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAEnumTypedef(AEnumTypedef node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAEnumTypedef(AEnumTypedef node)
-    {
-        inAEnumTypedef(node);
-        if(node.getLParen() != null)
-        {
-            node.getLParen().apply(this);
-        }
-        if(node.getIdentList() != null)
-        {
-            node.getIdentList().apply(this);
-        }
-        if(node.getRParen() != null)
-        {
-            node.getRParen().apply(this);
-        }
-        outAEnumTypedef(node);
-    }
-
     public void inASubprogramSpec(ASubprogramSpec node)
     {
         defaultIn(node);
@@ -461,9 +432,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseAAnotherParamSpec(AAnotherParamSpec node)
     {
         inAAnotherParamSpec(node);
-        if(node.getComma() != null)
+        if(node.getSemi() != null)
         {
-            node.getComma().apply(this);
+            node.getSemi().apply(this);
         }
         if(node.getParamSpec() != null)
         {

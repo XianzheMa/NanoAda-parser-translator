@@ -144,9 +144,6 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         this.enterIdentifiers(this.getIdentifiers(identList), SymbolEntry.CONST);
     }
 
-    // TODO: ignore enum_typedef: no use
-    // enum_typedef = l_paren ident_list r_paren;
-
 
     // param_spec = ident_list colon out? ident;
     @Override

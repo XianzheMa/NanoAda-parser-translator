@@ -6,7 +6,7 @@
 //  Copyright (c) 2004,2020 Daryl Posnett. All rights reserved.
 //
 // 	ECS140A, Winter 2020
-//  nada grammar version 0.02
+//  nada grammar version 0.03
 //
 Package nada;
 
@@ -145,12 +145,10 @@ Productions
     ident_list              =                   ident another_ident*;
         another_ident           =                   comma ident;
 
-    enum_typedef            =                   l_paren ident_list r_paren;
-
     subprogram_spec         =                   proc ident formal_part?;
     formal_part             =                   l_paren param_spec another_param_spec* r_paren;
     param_spec              =                   ident_list colon out? ident;
-        another_param_spec      =                   comma param_spec;
+        another_param_spec      =                   semi param_spec;
 
     stmt_seq                =                   [statement]:statement [statements]:statement*;
     statement               = {simple_stmt}     simple_stmt

@@ -22,7 +22,6 @@ public interface Analysis extends Switch
     void caseANumberDecl(ANumberDecl node);
     void caseAIdentList(AIdentList node);
     void caseAAnotherIdent(AAnotherIdent node);
-    void caseAEnumTypedef(AEnumTypedef node);
     void caseASubprogramSpec(ASubprogramSpec node);
     void caseAFormalPart(AFormalPart node);
     void caseAParamSpec(AParamSpec node);

@@ -135,12 +135,6 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseAEnumTypedef(AEnumTypedef node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
     public void caseASubprogramSpec(ASubprogramSpec node)
     {
         defaultCase(node);

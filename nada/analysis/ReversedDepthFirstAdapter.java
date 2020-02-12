@@ -322,35 +322,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAAnotherIdent(node);
     }
 
-    public void inAEnumTypedef(AEnumTypedef node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAEnumTypedef(AEnumTypedef node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAEnumTypedef(AEnumTypedef node)
-    {
-        inAEnumTypedef(node);
-        if(node.getRParen() != null)
-        {
-            node.getRParen().apply(this);
-        }
-        if(node.getIdentList() != null)
-        {
-            node.getIdentList().apply(this);
-        }
-        if(node.getLParen() != null)
-        {
-            node.getLParen().apply(this);
-        }
-        outAEnumTypedef(node);
-    }
-
     public void inASubprogramSpec(ASubprogramSpec node)
     {
         defaultIn(node);
@@ -468,9 +439,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getParamSpec().apply(this);
         }
-        if(node.getComma() != null)
+        if(node.getSemi() != null)
         {
-            node.getComma().apply(this);
+            node.getSemi().apply(this);
         }
         outAAnotherParamSpec(node);
     }
