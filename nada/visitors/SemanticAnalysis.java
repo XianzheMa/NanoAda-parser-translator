@@ -16,19 +16,12 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         this.printInfo = printInfo;
         this.table = new SymbolTable(roleEnabled);
         // load in predefined identifiers
+        // in nada, we only have one predefined identifier, INTEGER
         if(roleEnabled == true){
-            this.table.enterSymbol(new SymbolEntry("BOOLEAN", SymbolEntry.TYPE));
-            this.table.enterSymbol(new SymbolEntry("CHAR", SymbolEntry.TYPE));
             this.table.enterSymbol(new SymbolEntry("INTEGER", SymbolEntry.TYPE));
-            this.table.enterSymbol(new SymbolEntry("TRUE", SymbolEntry.CONST));
-            this.table.enterSymbol(new SymbolEntry("FALSE", SymbolEntry.CONST));
         }
         else{
-            this.table.enterSymbol(new SymbolEntry("BOOLEAN", SymbolEntry.NONE));
-            this.table.enterSymbol(new SymbolEntry("CHAR", SymbolEntry.NONE));
             this.table.enterSymbol(new SymbolEntry("INTEGER", SymbolEntry.NONE));
-            this.table.enterSymbol(new SymbolEntry("TRUE", SymbolEntry.NONE));
-            this.table.enterSymbol(new SymbolEntry("FALSE", SymbolEntry.NONE));
         }
     }
 
