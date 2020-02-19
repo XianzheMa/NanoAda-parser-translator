@@ -18,7 +18,7 @@ public class CodeGeneration extends DepthFirstAdapter{
         }
 
         /**
-         * Will prepend "T" to all names
+         * prepend "T" to all names
          * @param identList
          * @return
          */
@@ -38,7 +38,7 @@ public class CodeGeneration extends DepthFirstAdapter{
 
         @Override
         public void caseASubprogramBody(ASubprogramBody node){
-            this.write("private ");
+            this.write("private static void ");
             // see if it is returnable
             // node.apply(this.returnableChecker);
             // boolean returnable = this.returnableChecker.isReturnable();
@@ -48,7 +48,6 @@ public class CodeGeneration extends DepthFirstAdapter{
             // else{
             //     this.write("void ");
             // }
-            this.write("void ");
             node.getSubprogramSpec().apply(this);
             this.write(" {");
             CodeGeneration.this.beginNewLine(1);
@@ -106,7 +105,7 @@ public class CodeGeneration extends DepthFirstAdapter{
             }
             this.write(";");
             CodeGeneration.this.beginNewLine(0);
-            // restart
+            // reiterate
             iterator = nameList.iterator();
             while(iterator.hasNext()){
                 this.write(iterator.next() + " = ");
@@ -211,19 +210,16 @@ public class CodeGeneration extends DepthFirstAdapter{
             node.getStmtSeq().apply(this);
             CodeGeneration.this.beginNewLine(-1);
             this.write("}");
-            CodeGeneration.this.beginNewLine(0);
             if(node.getElseifClause() != null){
                 List<PElseifClause> elseifs = node.getElseifClause();
                 Iterator<PElseifClause> iterator = elseifs.iterator();
                 while(iterator.hasNext()){
+                    CodeGeneration.this.beginNewLine(0);
                     iterator.next().apply(this);
-                    if(iterator.hasNext()){
-                        CodeGeneration.this.beginNewLine(0);
-                    }
                 }
             }
-            CodeGeneration.this.beginNewLine(0);
             if(node.getElseClause() != null){
+                CodeGeneration.this.beginNewLine(0);
                 node.getElseClause().apply(this);
             }
             // no semicolon needed
@@ -283,23 +279,20 @@ public class CodeGeneration extends DepthFirstAdapter{
         @Override
         public void caseARelation(ARelation node) {
             node.getSimpleExpr().apply(this);
-            this.write(" ");
-            if(node.getRelationClause() != null){
-                node.getRelationClause().apply(this);
-            }
+            // in rel_op blanks are already added to both ends
+            node.getRelationClause().apply(this);
+        
         }
 
         @Override
         public void caseARelationClause(ARelationClause node) {
             node.getRelOp().apply(this);
-            this.write(" ");
             node.getSimpleExpr().apply(this);
         }
 
         @Override
         public void caseAStringLitWriteExpr(AStringLitWriteExpr node) {
             this.write(node.getStringLit().getText());
-            // TODO: check if println(3) works
         }
 
         @Override
@@ -380,6 +373,7 @@ public class CodeGeneration extends DepthFirstAdapter{
         public void caseAModMulOp(AModMulOp node) {
             this.write(" % ");
         }
+        
         /**
          * helps make other method not too verbose when writing Java code
          * @param Javacode the code needed to be printed out.
@@ -434,6 +428,10 @@ public class CodeGeneration extends DepthFirstAdapter{
     private String JavaFileName(String wholePathName){
         Path path = Paths.get(wholePathName);
         Path parentPath = path.getParent();
+        String parentPathString = "";
+        if(parentPath != null){
+            parentPathString = parentPath.toString();
+        }
         String shortAdaName = path.getFileName().toString();
         int dotIndex = shortAdaName.lastIndexOf('.');
         if(dotIndex == -1){
@@ -443,8 +441,7 @@ public class CodeGeneration extends DepthFirstAdapter{
     
         String firstLetter = shortAdaName.substring(0, 1).toUpperCase();
         this.className = firstLetter + shortAdaName.substring(1, dotIndex);
-    
-        return Paths.get(parentPath.toString(), this.className + ".java").toString();
+        return Paths.get(parentPathString, this.className + ".java").toString();
     }
 
 

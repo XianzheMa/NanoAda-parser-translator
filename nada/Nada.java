@@ -8,13 +8,12 @@ import java.io.*;
 import java.nio.file.*;
 
 import static java.lang.System.*;
-public class TerminalApp {
+public class Nada {
     public static void main(final String[] args) {
         if (args.length < 1) {
             out.println("USAGE");
             return;
         }
-        System.out.println(Paths.get(args[0]).getParent().toString());
         try {
             final Lexer lexer = new Lexer(new PushbackReader(new BufferedReader(new FileReader(args[0])), 1024));
             final Parser parser = new Parser(lexer);
