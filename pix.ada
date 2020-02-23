@@ -3,6 +3,7 @@ procedure primes is
     num, j, count, x : INTEGER;
 
 begin
+writeln();
 num := 1;
 x := 20;
 while num <= x loop

@@ -11,6 +11,11 @@ public class SemanticAnalysis extends DepthFirstAdapter{
     private boolean roleEnabled;
     private boolean printInfo;
 
+    /**
+     * 
+     * @param roleEnabled whether role analysis is enabled
+     * @param printInfo whether the info in a symbol table is printed out when the table is exited
+     */
     public SemanticAnalysis(boolean roleEnabled, boolean printInfo){
         this.roleEnabled = roleEnabled;
         this.printInfo = printInfo;
@@ -60,7 +65,7 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         boolean result = this.table.enterSymbol(new SymbolEntry(name, role));
         if(result == false){
             System.out.println("Redeclaration error: [" + identifier.getLine() + "," +
-                identifier.getPos() + "] " + name + "is already declared");
+                identifier.getPos() + "] " + name + " is already declared.");
                 System.exit(1);
         }
     }
@@ -104,7 +109,6 @@ public class SemanticAnalysis extends DepthFirstAdapter{
         this.table.enterScope();
     }
 
-
     // subprogram_body = subprogram_spec is decl_part begin stmt_seq end ident? semi;
     @Override
     public void outASubprogramBody(ASubprogramBody node){
@@ -133,17 +137,64 @@ public class SemanticAnalysis extends DepthFirstAdapter{
 
 
     // param_spec = ident_list colon out? ident;
-    @Override
-    public void outAParamSpec(AParamSpec node) {
+    /**
+     * examine whether this parameter specfication conforms to the semantic analysis rule
+     * and if there are more than one identifiers labeled out, abort the program
+     * if there is only one identifier labeled out, return true
+     * else return false
+     * @param node AParamSpec node
+     */
+    public boolean examineParamSpec(AParamSpec node) {
         TIdent identifier = node.getIdent();
         this.findIdentifier(identifier, SymbolEntry.TYPE);
         AIdentList identList = (AIdentList) node.getIdentList();
-        this.enterIdentifiers(this.getIdentifiers(identList), SymbolEntry.PARAM);
+        LinkedList<TIdent> identifiers = this.getIdentifiers(identList);
+        this.enterIdentifiers(identifiers, SymbolEntry.PARAM);
+        // up to now, if everything goes fine, then check 'out' issue.
+        if(node.getOut() == null){
+            // no out, return false
+            return false;
+        }
+        else{
+            TOut out = node.getOut();
+            // check the number of identifiers
+            if(identifiers.size() != 1){
+                System.out.println("Mode error: [" + out.getLine() + "," +
+                    out.getPos() + "] More than one identifiers have out mode.");
+                System.exit(1);
+            }
+            // out exists; return true
+            return true;
+        }
     }
 
     public void outStart(Start node) {
         this.table.exitScope(printInfo);
     }
+
+
+    // formal_part = l_paren param_spec another_param_spec* r_paren;
+    @Override
+    public void caseAFormalPart(AFormalPart node) {
+        AParamSpec paramSpec = (AParamSpec) node.getParamSpec();
+        boolean hasOut = this.examineParamSpec(paramSpec);
+        List<PAnotherParamSpec> anotherParamSpecs = node.getAnotherParamSpec();
+        for(PAnotherParamSpec pAnotherParamSpec: anotherParamSpecs){
+            paramSpec = (AParamSpec) ((AAnotherParamSpec)pAnotherParamSpec).getParamSpec();
+            boolean anotherOut = this.examineParamSpec(paramSpec);
+            if(hasOut == true && anotherOut == true){
+                System.out.println("Mode error: [" + node.getLParen().getLine() +
+                    "] More than one identifiers have out mode.");
+                System.exit(1);
+            }
+            else{
+                if(anotherOut == true){
+                    hasOut = true;
+                }
+            }
+        }
+    }
+
 
     // assign_stmt = ident gets simple_expr semi;
     @Override

@@ -3,6 +3,7 @@ procedure primes is
     num, j, count : INTEGER;
 
 begin
+writeln();
 num := 1;
 while num <= 100 loop
     if num = 1 then
