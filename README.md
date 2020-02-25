@@ -13,3 +13,6 @@ USAGE: java nada.Nada <src file>.
 ```
 ### Example
 [primes.ada](./primes.ada) is a program printing all the prime numbers within 1-100. It was translated into [Primes.java](./Primes.java).
+
+### Note
+The current version does not support nested procedures because of the flat structure of Java methods. One could try to leverage *nested class* in Java to implement nested procedures, but it would result in uglily-organized Java code so I didn't do that.
